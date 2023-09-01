@@ -34,6 +34,17 @@ public class Video {
 		}
 		return pentalty ;
 	}
+	public int getDaysRentedLimit() {
+		int limit = 0 ;
+		switch ( videoType ) {
+			case Video.VHS: limit = 5 ; break ;
+			case Video.CD: limit = 3 ; break ;
+			case Video.DVD: limit = 2 ; break ;
+		}
+		return limit ;
+	}
+
+
 	public int getPriceCode() {
 		return priceCode;
 	}

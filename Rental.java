@@ -39,15 +39,7 @@ public class Rental {
 			returnDate = new Date() ;
 		}
 	}
-	public Date getRentDate() {
-		return rentDate;
-	}
 
-	public Date getReturnDate() {
-		return returnDate;
-	}
-
-	// Feature Envy
 	public int getDaysRentedLimit() {
 		// date
 		int limit = 0 ;
@@ -55,13 +47,7 @@ public class Rental {
 
 		if ( daysRented <= 2) return limit ;
 
-		// video
-		switch ( video.getVideoType() ) {
-			case Video.VHS: limit = 5 ; break ;
-			case Video.CD: limit = 3 ; break ;
-			case Video.DVD: limit = 2 ; break ;
-		}
-		return limit ;
+		return video.getDaysRentedLimit();
 	}
 
 	public int getDaysRented() {
