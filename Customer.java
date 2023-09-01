@@ -51,6 +51,7 @@ public class Customer {
 
 			// Charge - Point
 			totalCharge += charge;
+			totalPoint += point;
 		}
 
 		result += "Total charge: " + totalCharge + "\tTotal Point:" + totalPoint + "\n";
