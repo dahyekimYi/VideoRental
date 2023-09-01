@@ -9,6 +9,7 @@ public class Rental {
 	public static final int REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE = 2;
 
 	private Video video ;
+
 	public enum RentalStatus {
 		RENTED,
 		RETURNED
@@ -74,4 +75,36 @@ public class Rental {
 		}
 		return daysRented;
 	}
+
+	double getCharge(Rental rental, int daysRented) {
+		double charge = 0;
+		switch (rental.getVideo().getPriceCode()) {
+			case Video.REGULAR:
+				charge += REGULAR_VIDEO_CHARGE_BASE_PRICE;
+				/**
+				 * Magic Number가 무엇을 의미??
+				 */
+				if (daysRented > REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
+					charge += (daysRented - REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE) *
+							REGULAR_VIDEO_CHARGE_RATE;
+				break;
+			case Video.NEW_RELEASE:
+				charge = daysRented * NEW_RELEASE_VIDEO_CHARGE_RATE;
+				break;
+		}
+		return charge;
+	}
+
+	int getPoint(int daysRented) {
+		int point = 0;
+		point++;
+
+		if ((getVideo().getPriceCode() == Video.NEW_RELEASE) )
+			point++;
+
+		if ( daysRented > getDaysRentedLimit() )
+			point -= Math.min(point, getVideo().getLateReturnPointPenalty()) ;
+		return point;
+	}
+
 }
