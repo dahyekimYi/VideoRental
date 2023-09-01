@@ -2,10 +2,16 @@ import java.util.Date;
 
 // Data Class
 public class Rental {
+
+	public static final double REGULAR_VIDEO_CHARGE_RATE = 1.5;
+	public static final double NEW_RELEASE_VIDEO_CHARGE_RATE = 3.0;
+	public static final double REGULAR_VIDEO_CHARGE_BASE_PRICE = 2.0;
+	public static final int REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE = 2;
+
 	private Video video ;
-	private enum RentalStatus {
-		RENTED = 0,
-		RETRUNED
+	public enum RentalStatus {
+		RENTED,
+		RETURNED
 	}
 	private RentalStatus status;
 	private Date rentDate ;
@@ -13,7 +19,7 @@ public class Rental {
 
 	public Rental(Video video) {
 		this.video = video ;
-		status = RENTED;
+		status = RentalStatus.RENTED;
 
 		rentDate = new Date() ;
 	}
@@ -22,13 +28,13 @@ public class Rental {
 		return video;
 	}
 
-	public int getStatus() {
+	public RentalStatus getStatus() {
 		return status;
 	}
 
 	public void returnVideo() {
-		if ( status == RETURNED ) {
-			this.status = RETURNED;
+		if ( status == RentalStatus.RETURNED ) {
+			this.status = RentalStatus.RETURNED;
 			returnDate = new Date() ;
 		}
 	}
@@ -45,14 +51,15 @@ public class Rental {
 		// date
 		int limit = 0 ;
 		int daysRented ;
-		if (getStatus() == RETRUNED) { // returned Video
+		if (getStatus() == RentalStatus.RETURNED) { // returned Video
 			long diff = returnDate.getTime() - rentDate.getTime();
 			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 		} else { // not yet returned
 			long diff = new Date().getTime() - rentDate.getTime();
 			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 		}
-		if ( daysRented <= 2) return limit ;
+		if ( daysRented <= REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
+			return limit;
 
 		// video
 		switch ( video.getVideoType() ) {

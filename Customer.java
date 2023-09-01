@@ -4,11 +4,6 @@ import java.util.List;
 
 public class Customer {
 
-	private static final double REGULAR_VIDEO_CHARGE_RATE = 1.5;
-	private static final double NEW_RELEASE_VIDEO_CHARGE_RATE = 3.0;
-	private static final double REGULAR_VIDEO_CHARGE_BASE_PRICE = 2.0;
-	private static final int REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE = 2;
-	
 	private String name;
 
 	private List<Rental> rentals = new ArrayList<Rental>();
@@ -52,7 +47,7 @@ public class Customer {
 			int eachPoint = 0 ;
 			int daysRented = 0;
 
-			if (each.getStatus() == 1) { // returned Video
+			if (each.getStatus() == Rental.RentalStatus.RETURNED) { // returned Video
 				long diff = each.getReturnDate().getTime() - each.getRentDate().getTime();
 				daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 			} else { // not yet returned
@@ -63,15 +58,16 @@ public class Customer {
 			// Type Code
 			switch (each.getVideo().getPriceCode()) {
 				case Video.REGULAR:
-					eachCharge += REGULAR_VIDEO_CHARGE_BASE_PRICE;
+					eachCharge += Rental.REGULAR_VIDEO_CHARGE_BASE_PRICE;
 					/**
 					 * Magic Number가 무엇을 의미??
 					 */
-					if (daysRented > REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
-						eachCharge += (daysRented - REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE) * REGULAR_VIDEO_CHARGE_RATE;
+					if (daysRented > Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
+						eachCharge += (daysRented -Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE) *
+								Rental.REGULAR_VIDEO_CHARGE_RATE;
 					break;
 				case Video.NEW_RELEASE:
-					eachCharge = daysRented * NEW_RELEASE_VIDEO_CHARGE_RATE;
+					eachCharge = daysRented * Rental.NEW_RELEASE_VIDEO_CHARGE_RATE;
 					break;
 			}
 
