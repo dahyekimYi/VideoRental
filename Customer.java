@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Customer {
@@ -42,42 +41,17 @@ public class Customer {
 		double totalCharge = 0;
 		int totalPoint = 0;
 
-		for (Rental each : rentals) {
-			double eachCharge = 0;
-			int eachPoint = 0 ;
-			int daysRented = each.getDaysRented();
+		for (Rental rental : rentals) {
+			int daysRented = rental.getDaysRented();
+			double charge = rental.getCharge(rental, daysRented);
+			int point = rental.getPoint(daysRented);
 
-			// Type Code
-			switch (each.getVideo().getPriceCode()) {
-				case Video.REGULAR:
-					eachCharge += Rental.REGULAR_VIDEO_CHARGE_BASE_PRICE;
-					/**
-					 * Magic Number가 무엇을 의미??
-					 */
-					if (daysRented > Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
-						eachCharge += (daysRented -Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE) *
-								Rental.REGULAR_VIDEO_CHARGE_RATE;
-					break;
-				case Video.NEW_RELEASE:
-					eachCharge = daysRented * Rental.NEW_RELEASE_VIDEO_CHARGE_RATE;
-					break;
-			}
-
-			eachPoint++;
-
-			if ((each.getVideo().getPriceCode() == Video.NEW_RELEASE) )
-				eachPoint++;
-
-			if ( daysRented > each.getDaysRentedLimit() )
-				eachPoint -= Math.min(eachPoint, each.getVideo().getLateReturnPointPenalty()) ;
-
-			result += "\t" + each.getVideo().getTitle() + "\tDays rented: " + daysRented + "\tCharge: " + eachCharge
-					+ "\tPoint: " + eachPoint + "\n";
+			result += "\t" + rental.getVideo().getTitle() + "\tDays rented: " + daysRented + "\tCharge: " + charge
+					+ "\tPoint: " + point + "\n";
 
 			// Charge - Point
-			totalCharge += eachCharge;
-
-			totalPoint += eachPoint ;
+			totalCharge += charge;
+			totalPoint += point ;
 		}
 
 		result += "Total charge: " + totalCharge + "\tTotal Point:" + totalPoint + "\n";
@@ -91,4 +65,5 @@ public class Customer {
 		}
 		return result ;
 	}
+
 }
