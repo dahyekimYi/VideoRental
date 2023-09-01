@@ -32,7 +32,7 @@ public class Rental {
 	}
 
 	public void returnVideo() {
-		if ( status == RETURNED ) { // 원본 코디에서 status==1이던데 0이 맞지 않음?
+		if ( status == RETURNED ) {
 			this.status = RETURNED;
 			returnDate = new Date() ;
 		}
@@ -58,7 +58,7 @@ public class Rental {
 		// date
 		int limit = 0 ;
 		int daysRented ;
-		if (getStatus() == 1) { // returned Video
+		if (getStatus() == RETRUNED) { // returned Video
 			long diff = returnDate.getTime() - rentDate.getTime();
 			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 		} else { // not yet returned
