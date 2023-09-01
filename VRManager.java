@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class VRManager {
     private final List<Customer> customers = new ArrayList<>() ;
@@ -32,28 +33,23 @@ public class VRManager {
     }
 
     public void clearRentals() {
-        String customerName = vrUI.getCustomerName();
-        // duplication
-        Customer foundCustomer = null ;
-        for ( Customer customer: customers ) {
-            if ( customer.getName().equals(customerName)) {
-                foundCustomer = customer ;
-                break ;
-            }
+        Optional<Customer> customer = getCustomer();
+
+        if(customer.isEmpty()) {
+            vrUI.printNoCustomerErrorMessage();
+            return;
         }
 
-        if ( foundCustomer == null ) {
-            vrUI.printNoCustomerErrorMessage();
-        } else {
-            // CQRS
-            // : Query
-            vrUI.notifyRentalInfo(foundCustomer.getName(), foundCustomer.getRentals().size());
-            for ( Rental rental: foundCustomer.getRentals() ) {
-                vrUI.notifyVideoInfo(rental.getVideo().getTitle(), rental.getVideo().getPriceCode());
-            }
-            // : Command
-            addRentalsToCustomer(foundCustomer);
+        Customer foundCustomer = customer.get();
+
+        // CQRS
+        // : Query
+        vrUI.notifyRentalInfo(foundCustomer.getName(), foundCustomer.getRentals().size());
+        for ( Rental rental: foundCustomer.getRentals() ) {
+            vrUI.notifyVideoInfo(rental.getVideo().getTitle(), rental.getVideo().getPriceCode());
         }
+        // : Command
+        addRentalsToCustomer(foundCustomer);
     }
 
     private static void addRentalsToCustomer(Customer foundCustomer) {
@@ -62,18 +58,11 @@ public class VRManager {
     }
 
     public void returnVideo() {
-        String customerName = vrUI.getCustomerName();
-        Customer foundCustomer = null ;
-        for ( Customer customer: customers ) {
-            if ( customer.getName().equals(customerName)) {
-                foundCustomer = customer ;
-                break ;
-            }
-        }
-        if ( foundCustomer == null ) return ;
+        Optional<Customer> customer = getCustomer();
+        if (customer.isEmpty()) return;
 
         String videoTitle = vrUI.getVideoTitleToRent();
-        List<Rental> customerRentals = foundCustomer.getRentals() ;
+        List<Rental> customerRentals = customer.get().getRentals() ;
         for ( Rental rental: customerRentals ) {
             // introduce delegation
             if ( rental.getVideo().getTitle().equals(videoTitle) && rental.getVideo().isRented() ) {
@@ -82,6 +71,13 @@ public class VRManager {
                 break ;
             }
         }
+    }
+
+    private Optional<Customer> getCustomer() {
+        String customerName = vrUI.getCustomerName();
+        return customers.stream()
+                .filter(customer -> customer.getName().equals(customerName))
+                .findFirst();
     }
 
     public void listVideos() {
@@ -105,23 +101,15 @@ public class VRManager {
     }
 
     public void getCustomerReport() {
-        String customerName = vrUI.getCustomerName();
-
-        Customer foundCustomer = null ;
-        for ( Customer customer: customers ) {
-            if ( customer.getName().equals(customerName)) {
-                foundCustomer = customer ;
-                break ;
-            }
-        }
-
-        if ( foundCustomer == null ) {
+        Optional<Customer> customer = getCustomer();
+        if(customer.isEmpty()) {
             vrUI.printNoCustomerErrorMessage();
-        } else {
-            // report를 어디에 둘건가? VRUI or Customer
-            String result = foundCustomer.getReport() ;
-            System.out.println(result);
+            return;
         }
+
+        // report를 어디에 둘건가? VRUI or Customer
+        String result = customer.get().getReport() ;
+        System.out.println(result);
     }
 
 
