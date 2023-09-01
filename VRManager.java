@@ -120,7 +120,7 @@ public class VRManager {
         } else {
             // report를 어디에 둘건가? VRUI or Customer
             String result = foundCustomer.getReport() ;
-            System.out.println(result);
+            vrUI.notifyMessage(result);
         }
     }
 
