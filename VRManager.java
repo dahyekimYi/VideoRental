@@ -106,7 +106,8 @@ public class VRManager {
             vrUI.printNoCustomerErrorMessage();
             return;
         } 
-      
+
+        Customer foundCustomer = customer.get();
         // report를 어디에 둘건가? VRUI or Customer
         String result = foundCustomer.getReport() ;
         checkCoupon(foundCustomer);
