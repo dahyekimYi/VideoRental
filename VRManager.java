@@ -126,17 +126,13 @@ public class VRManager {
 
     // SRP 위반 (-> video, rental로 이동 필요)
     public void rentVideo() {
-        String customerName = vrUI.getCustomerName();
-
-        Customer foundCustomer = null ;
-        for ( Customer customer: customers ) {
-            if ( customer.getName().equals(customerName)) {
-                foundCustomer = customer ;
-                break ;
-            }
+        Optional<Customer> customer = getCustomer();
+        if (customer.isEmpty()) {
+            return;
         }
 
-        if ( foundCustomer == null ) return ;
+        Customer foundCustomer = customer.get();
+
         String videoTitle = vrUI.getVideoTitleToRent();
 
         Video foundVideo = null ;
