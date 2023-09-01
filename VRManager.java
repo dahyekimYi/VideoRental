@@ -121,7 +121,7 @@ public class VRManager {
             // report를 어디에 둘건가? VRUI or Customer
             String result = foundCustomer.getReport() ;
             checkCoupon(foundCustomer);
-            System.out.println(result);
+            vrUI.notifyMessage(result);
         }
     }
 
