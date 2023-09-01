@@ -134,13 +134,7 @@ public class VRManager {
 
         if ( foundVideo == null ) return ;
 
-        Rental rental = new Rental(foundVideo) ;
-        foundVideo.setRented(true);
-
-        // encapsulate collection
-        List<Rental> customerRentals = foundCustomer.getRentals() ;
-        customerRentals.add(rental);
-        foundCustomer.setRentals(customerRentals);
+        foundCustomer.addRental(new Rental(foundVideo));
     }
 
     // customer, video 따로 등록

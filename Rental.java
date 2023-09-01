@@ -19,10 +19,10 @@ public class Rental {
 	private Date returnDate ;
 
 	public Rental(Video video) {
-		this.video = video ;
+		this.video = video;
+		this.video.setRented(true);
 		status = RentalStatus.RENTED;
-
-		rentDate = new Date() ;
+		rentDate = new Date();
 	}
 
 	public Video getVideo() {
