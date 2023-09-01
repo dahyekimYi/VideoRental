@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Customer {
+
 	private String name;
 
 	private List<Rental> rentals = new ArrayList<Rental>();
@@ -48,14 +49,18 @@ public class Customer {
 
 			// Type Code
 			switch (each.getVideo().getPriceCode()) {
-			case Video.REGULAR:
-				eachCharge += 2;
-				if (daysRented > 2)
-					eachCharge += (daysRented - 2) * 1.5;
-				break;
-			case Video.NEW_RELEASE:
-				eachCharge = daysRented * 3;
-				break;
+				case Video.REGULAR:
+					eachCharge += Rental.REGULAR_VIDEO_CHARGE_BASE_PRICE;
+					/**
+					 * Magic Number가 무엇을 의미??
+					 */
+					if (daysRented > Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE)
+						eachCharge += (daysRented -Rental.REGULAR_VIDEO_EXTRA_CHARGE_OVER_DATE) *
+								Rental.REGULAR_VIDEO_CHARGE_RATE;
+					break;
+				case Video.NEW_RELEASE:
+					eachCharge = daysRented * Rental.NEW_RELEASE_VIDEO_CHARGE_RATE;
+					break;
 			}
 
 			eachPoint++;
