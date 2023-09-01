@@ -3,14 +3,18 @@ import java.util.Date;
 // Data Class
 public class Rental {
 	private Video video ;
-	//enum
-	private int status ; // 0 for Rented, 1 for Returned
+	private enum RentalStatus {
+		RENTED = 0,
+		RETRUNED
+	}
+	private RentalStatus status;
 	private Date rentDate ;
 	private Date returnDate ;
 
 	public Rental(Video video) {
 		this.video = video ;
-		status = 0 ;
+		status = RENTED;
+
 		rentDate = new Date() ;
 	}
 
@@ -23,13 +27,13 @@ public class Rental {
 		this.video = video;
 	}
 
-	public int getStatus() {
+	public RentalStatus getStatus() {
 		return status;
 	}
 
 	public void returnVideo() {
-		if ( status == 1 ) {
-			this.status = 1;
+		if ( status == RETURNED ) { // 원본 코디에서 status==1이던데 0이 맞지 않음?
+			this.status = RETURNED;
 			returnDate = new Date() ;
 		}
 	}
