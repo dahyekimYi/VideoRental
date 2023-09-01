@@ -3,8 +3,8 @@ import java.util.Date;
 import java.util.List;
 
 public class VRManager {
-    private final List<Customer> customers = new ArrayList<Customer>() ;
-    private final List<Video> videos = new ArrayList<Video>() ;
+    private final List<Customer> customers = new ArrayList<>() ;
+    private final List<Video> videos = new ArrayList<>() ;
     private static final VRUI vrUI = new VRUI();
 
     public static void main(String[] args) {
@@ -13,18 +13,19 @@ public class VRManager {
         boolean quit = false ;
         while ( ! quit ) {
             int command = vrUI.showCommand() ;
-            switch ( command ) {
-                case 0: quit = true ; break ;
-                case 1: vrManager.listCustomers() ; break ;
-                case 2: vrManager.listVideos() ; break ;
-                case 3: vrManager.register("customer") ; break ;
-                case 4: vrManager.register("video") ; break ;
-                case 5: vrManager.rentVideo() ; break ;
-                case 6: vrManager.returnVideo() ; break ;
-                case 7: vrManager.getCustomerReport() ; break;
-                case 8: vrManager.clearRentals() ; break ;
-                case -1: vrManager.init() ; break ;
-                default: break ;
+            switch (command) {
+                case 0 -> quit = true;
+                case 1 -> vrManager.listCustomers();
+                case 2 -> vrManager.listVideos();
+                case 3 -> vrManager.register("customer");
+                case 4 -> vrManager.register("video");
+                case 5 -> vrManager.rentVideo();
+                case 6 -> vrManager.returnVideo();
+                case 7 -> vrManager.getCustomerReport();
+                case 8 -> vrManager.clearRentals();
+                case -1 -> vrManager.init();
+                default -> {
+                }
             }
         }
         vrUI.notifyMessage("Bye");
@@ -54,7 +55,7 @@ public class VRManager {
             }
 
             // : Command
-            List<Rental> rentals = new ArrayList<Rental>() ;
+            List<Rental> rentals = new ArrayList<>() ;
             foundCustomer.setRentals(rentals);
         }
     }
@@ -142,7 +143,7 @@ public class VRManager {
 
         Video foundVideo = null ;
         for ( Video video: videos ) {
-            if ( video.getTitle().equals(videoTitle) && video.isRented() == false ) {
+            if ( video.getTitle().equals(videoTitle) && !video.isRented()) {
                 foundVideo = video ;
                 break ;
             }
