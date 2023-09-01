@@ -3,14 +3,18 @@ import java.util.Date;
 // Data Class
 public class Rental {
 	private Video video ;
-	//enum
-	private int status ; // 0 for Rented, 1 for Returned
+	private enum RentalStatus {
+		RENTED = 0,
+		RETRUNED
+	}
+	private RentalStatus status;
 	private Date rentDate ;
 	private Date returnDate ;
 
 	public Rental(Video video) {
 		this.video = video ;
-		status = 0 ;
+		status = RENTED;
+
 		rentDate = new Date() ;
 	}
 
@@ -23,8 +27,8 @@ public class Rental {
 	}
 
 	public void returnVideo() {
-		if ( status == 1 ) {
-			this.status = 1;
+		if ( status == RETURNED ) {
+			this.status = RETURNED;
 			returnDate = new Date() ;
 		}
 	}
@@ -41,7 +45,7 @@ public class Rental {
 		// date
 		int limit = 0 ;
 		int daysRented ;
-		if (getStatus() == 1) { // returned Video
+		if (getStatus() == RETRUNED) { // returned Video
 			long diff = returnDate.getTime() - rentDate.getTime();
 			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 		} else { // not yet returned
