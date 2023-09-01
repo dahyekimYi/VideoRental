@@ -120,10 +120,20 @@ public class VRManager {
         } else {
             // report를 어디에 둘건가? VRUI or Customer
             String result = foundCustomer.getReport() ;
+            checkCoupon(foundCustomer);
             vrUI.notifyMessage(result);
         }
     }
 
+    private static void checkCoupon(Customer foundCustomer) {
+        int totalPoint = foundCustomer.getTotalPoint();
+        if ( totalPoint >= 10 ) {
+            vrUI.notifyMessage("Congrat! You earned one free coupon");
+        }
+        if ( totalPoint >= 30 ) {
+            vrUI.notifyMessage("Congrat! You earned two free coupon");
+        }
+    }
 
     // SRP 위반 (-> video, rental로 이동 필요)
     public void rentVideo() {

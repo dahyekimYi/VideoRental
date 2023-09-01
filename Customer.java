@@ -39,22 +39,22 @@ public class Customer {
 		List<Rental> rentals = getRentals();
 
 		double totalCharge = 0;
-		int totalPoint = 0;
+		//int totalPoint = 0;
 
 		for (Rental rental : rentals) {
 			int daysRented = rental.getDaysRented();
 			double charge = rental.getCharge(rental, daysRented);
-			int point = rental.getPoint(daysRented);
+			//int point = rental.getPoint(daysRented);
 
 			result += "\t" + rental.getVideo().getTitle() + "\tDays rented: " + daysRented + "\tCharge: " + charge
 					+ "\tPoint: " + point + "\n";
 
 			// Charge - Point
 			totalCharge += charge;
-			totalPoint += point ;
+			//totalPoint += point ;
 		}
 
-		result += "Total charge: " + totalCharge + "\tTotal Point:" + totalPoint + "\n";
+		result += "Total charge: " + totalCharge + "\tTotal Point:" + getTotalPoint() + "\n";
 
 
 		if ( totalPoint >= 10 ) {
@@ -64,6 +64,14 @@ public class Customer {
 			System.out.println("Congrat! You earned two free coupon");
 		}
 		return result ;
+	}
+
+	public int getTotalPoint() {
+		int totalPoint = 0;
+		for (Rental rental : rentals) {
+			totalPoint += rental.getPoint(daysRented);
+		}
+		return totalPoint;
 	}
 
 }
