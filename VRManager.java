@@ -3,9 +3,9 @@ import java.util.Date;
 import java.util.List;
 
 public class VRManager {
-    private List<Customer> customers = new ArrayList<Customer>() ;
-    private List<Video> videos = new ArrayList<Video>() ;
-    private static VRUI vrUI = new VRUI();
+    private final List<Customer> customers = new ArrayList<Customer>() ;
+    private final List<Video> videos = new ArrayList<Video>() ;
+    private static final VRUI vrUI = new VRUI();
 
     public static void main(String[] args) {
         VRManager vrManager = new VRManager() ;

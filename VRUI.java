@@ -1,8 +1,7 @@
-import java.util.Date;
 import java.util.Scanner;
 
 public class VRUI {
-	private static Scanner scanner = new Scanner(System.in);
+	private static final Scanner scanner = new Scanner(System.in);
 
 	public String getCustomerName(){
 		System.out.println("Enter customer name: ") ;
@@ -50,9 +49,7 @@ public class VRUI {
 		System.out.println("\t 7. Show customer report");
 		System.out.println("\t 8. Show customer and clear rentals");
 
-		int command = scanner.nextInt() ;
-
-		return command ;
+        return scanner.nextInt();
 
 	}
 }
