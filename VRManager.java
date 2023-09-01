@@ -128,10 +128,10 @@ public class VRManager {
     private static void checkCoupon(Customer foundCustomer) {
         int totalPoint = foundCustomer.getTotalPoint();
         if ( totalPoint >= 10 ) {
-            System.out.println("Congrat! You earned one free coupon");
+            vrUI.notifyMessage("Congrat! You earned one free coupon");
         }
         if ( totalPoint >= 30 ) {
-            System.out.println("Congrat! You earned two free coupon");
+            vrUI.notifyMessage("Congrat! You earned two free coupon");
         }
     }
 
