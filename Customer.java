@@ -56,10 +56,10 @@ public class Customer {
 		result += "Total charge: " + totalCharge + "\tTotal Point:" + totalPoint + "\n";
 
 		if ( totalPoint >= 10 ) {
-			vrUI.notifyMessage("Congrat! You earned one free coupon");
+			System.out.println("Congrat! You earned one free coupon");
 		}
 		if ( totalPoint >= 30 ) {
-			vrUI.notifyMessage("Congrat! You earned two free coupon");
+			System.out.println("Congrat! You earned two free coupon");
 		}
 
 		return result ;
