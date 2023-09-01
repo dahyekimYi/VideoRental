@@ -36,6 +36,15 @@ public class VRUI {
 		System.out.println(message);
 	}
 
+	public void notifyRentalInfo(String name, int rentalSize){
+		System.out.println("Name: " + name +
+				"\tRentals: " + rentalSize) ;
+	}
+
+	public void notifyVideoInfo(String title, int priceCode){
+		System.out.println("\tTitle: " + title + " ") ;
+		System.out.println("\tPrice Code: " + priceCode) ;
+	}
 
 	public int showCommand() {
 		System.out.println("\nSelect a command !");

@@ -8,7 +8,7 @@ public class VRManager {
     private static final VRUI vrUI = new VRUI();
 
     public static void main(String[] args) {
-        VRManager vrManager = new VRManager() ;
+        VRManager vrManager = new VRManager();
 
         boolean quit = false ;
         while ( ! quit ) {
@@ -17,8 +17,8 @@ public class VRManager {
                 case 0 -> quit = true;
                 case 1 -> vrManager.listCustomers();
                 case 2 -> vrManager.listVideos();
-                case 3 -> vrManager.register("customer");
-                case 4 -> vrManager.register("video");
+                case 3 -> vrManager.registerCustomer();
+                case 4 -> vrManager.registerVideo();
                 case 5 -> vrManager.rentVideo();
                 case 6 -> vrManager.returnVideo();
                 case 7 -> vrManager.getCustomerReport();
@@ -43,21 +43,22 @@ public class VRManager {
         }
 
         if ( foundCustomer == null ) {
-            vrUI.notifyMessage("No customer found");
+            vrUI.printNoCustomerErrorMessage();
         } else {
             // CQRS
             // : Query
-            vrUI.notifyMessage("Name: " + foundCustomer.getName() +
-                    "\tRentals: " + foundCustomer.getRentals().size()) ;
+            vrUI.notifyRentalInfo(foundCustomer.getName(), foundCustomer.getRentals().size());
             for ( Rental rental: foundCustomer.getRentals() ) {
-                vrUI.notifyMessage("\tTitle: " + rental.getVideo().getTitle() + " ") ;
-                vrUI.notifyMessage("\tPrice Code: " + rental.getVideo().getPriceCode()) ;
+                vrUI.notifyVideoInfo(rental.getVideo().getTitle(), rental.getVideo().getPriceCode());
             }
-
             // : Command
-            List<Rental> rentals = new ArrayList<>() ;
-            foundCustomer.setRentals(rentals);
+            addRentalsToCustomer(foundCustomer);
         }
+    }
+
+    private static void addRentalsToCustomer(Customer foundCustomer) {
+        List<Rental> rentals = new ArrayList<>() ;
+        foundCustomer.setRentals(rentals);
     }
 
     public void returnVideo() {
@@ -87,7 +88,7 @@ public class VRManager {
         vrUI.notifyMessage("List of videos");
 
         for ( Video video: videos ) {
-            vrUI.notifyMessage("Price code: " + video.getPriceCode() +"\tTitle: " + video.getTitle()) ;
+            vrUI.notifyVideoInfo(video.getTitle(), video.getPriceCode()) ;
         }
         vrUI.notifyMessage("End of list");
     }
@@ -95,11 +96,9 @@ public class VRManager {
     public void listCustomers() {
         vrUI.notifyMessage("List of customers");
         for ( Customer customer: customers ) {
-            vrUI.notifyMessage("Name: " + customer.getName() +
-                    "\tRentals: " + customer.getRentals().size()) ;
+            vrUI.notifyRentalInfo(customer.getName(), customer.getRentals().size());
             for ( Rental rental: customer.getRentals() ) {
-                vrUI.notifyMessage("\tTitle: " + rental.getVideo().getTitle() + " ") ;
-                vrUI.notifyMessage("\tPrice Code: " + rental.getVideo().getPriceCode()) ;
+                vrUI.notifyVideoInfo(rental.getVideo().getTitle(), rental.getVideo().getPriceCode());
             }
         }
         vrUI.notifyMessage("End of list");
@@ -161,23 +160,22 @@ public class VRManager {
     }
 
     // customer, video 따로 등록
-    public void register(String object) {
-        if ( object.equals("customer") ) {
-            String name = vrUI.getCustomerName();
-            Customer customer = new Customer(name) ;
-            customers.add(customer) ;
-        }
-        else {
-            String title = vrUI.getVideoTitleToRegister();
-            int videoType = vrUI.getVideoType();
-            int priceCode = vrUI.getPriceCode();
 
-            Date registeredDate = new Date();
-            Video video = new Video(title, videoType, priceCode, registeredDate) ;
-            videos.add(video) ;
-        }
+    public void registerCustomer(){
+        String name = vrUI.getCustomerName();
+        Customer customer = new Customer(name) ;
+        customers.add(customer) ;
     }
 
+    public void registerVideo(){
+        String title = vrUI.getVideoTitleToRegister();
+        int videoType = vrUI.getVideoType();
+        int priceCode = vrUI.getPriceCode();
+
+        Date registeredDate = new Date();
+        Video video = new Video(title, videoType, priceCode, registeredDate) ;
+        videos.add(video) ;
+    }
 
     private void init() {
         Customer james = new Customer("James") ;
